@@ -12,65 +12,58 @@ public class Office {
     public Office() {
         this.workplace = new Workplace();
 
-        Group gr1 = new Group("Sales1");
-        Group gr2 = new Group("Sales2");
-        Group gr3 = new Group("Office1");
+        Group gr1 = createGroup("Sales1");
+        Group gr2 = createGroup("Sales2");
+        Group gr3 = createGroup("Office1");
 
-        GroupLead gl1 = new GroupLead("Mattew", gr1.getName());
-        GroupLead gl2 = new GroupLead("Dan", gr2.getName());
-        GroupLead gl3 = new GroupLead("Oliver", gr3.getName());
-
-        SalesEmployee se1 = new SalesEmployee("Alice", gr1.getName());
-        SalesEmployee se2 = new SalesEmployee("Tom", gr1.getName());
-        SalesEmployee se3 = new SalesEmployee("Bob", gr1.getName());
-        SalesEmployee se4 = new SalesEmployee("Aly", gr2.getName());
-        SalesEmployee se5 = new SalesEmployee("Luke", gr2.getName());
-        SalesEmployee se6 = new SalesEmployee("Bill", gr2.getName());
-
-        OfficeWorker ow1 = new OfficeWorker("John", gr3.getName(), EmployeeType.JUNIOR);
-        OfficeWorker ow2 = new OfficeWorker("Jimm", gr3.getName(), EmployeeType.SENIOR);
-        OfficeWorker ow3 = new OfficeWorker("Jack", gr3.getName(), EmployeeType.SENIOR);
-        OfficeWorker ow4 = new OfficeWorker("Wex", gr3.getName(), EmployeeType.SENIOR);
-        OfficeWorker ow5 = new OfficeWorker("Max", gr3.getName(), EmployeeType.SENIOR);
-        OfficeWorker ow6 = new OfficeWorker("Benn", gr3.getName(), EmployeeType.JUNIOR);
-
-        this.workplace.addEmployee(se1);
-        this.workplace.addEmployee(se2);
-        this.workplace.addEmployee(se3);
-        this.workplace.addEmployee(se4);
-        this.workplace.addEmployee(se5);
-        this.workplace.addEmployee(se6);
-        this.workplace.addEmployee(ow1);
-        this.workplace.addEmployee(ow2);
-        this.workplace.addEmployee(ow3);
-        this.workplace.addEmployee(ow4);
-        this.workplace.addEmployee(ow5);
-        this.workplace.addEmployee(ow6);
-        this.workplace.addEmployee(gl1);
-        this.workplace.addEmployee(gl2);
-        this.workplace.addEmployee(gl3);
-
-        gr1.addMember(se1);
-        gr1.addMember(se2);
-        gr1.addMember(se3);
-        gr2.addMember(se4);
-        gr2.addMember(se5);
-        gr2.addMember(se6);
-        gr3.addMember(ow1);
-        gr3.addMember(ow2);
-        gr3.addMember(ow3);
-        gr3.addMember(ow4);
-        gr3.addMember(ow5);
-        gr3.addMember(ow6);
-
-        gr1.setAssignedLeader(gl1);
-        gr2.setAssignedLeader(gl2);
-        gr3.setAssignedLeader(gl3);
-
-        gl1.setNumberOfEmployees(gr1.getMembers().size());
-        gl2.setNumberOfEmployees(gr2.getMembers().size());
-        gl3.setNumberOfEmployees(gr3.getMembers().size());
+        createAndAddEmployees(gr1, gr2, gr3);
 
         workplace.printYearlySalaries();
+    }
+
+    private Group createGroup(String name) {
+        Group group = new Group(name);
+        workplace.addGroup(group);
+        return group;
+    }
+
+    private void createAndAddEmployees(Group gr1, Group gr2, Group gr3) {
+        // Create and add SalesEmployees for group 1
+        addSalesEmployees(gr1, "Alice", "Tom", "Bob");
+
+        // Create and add SalesEmployees for group 2
+        addSalesEmployees(gr2, "Aly", "Luke", "Bill");
+
+        // Create and add OfficeWorkers for group 3
+        addOfficeWorkers(gr3, "John", "Jimm", "Jack", "Wex", "Max", "Benn");
+
+        // Create and add GroupLeads
+        addGroupLead(gr1, "Mattew");
+        addGroupLead(gr2, "Dan");
+        addGroupLead(gr3, "Oliver");
+    }
+
+    private void addSalesEmployees(Group group, String... names) {
+        for (String name : names) {
+            SalesEmployee employee = new SalesEmployee(name, group.getName());
+            workplace.addEmployee(employee);
+            group.addMember(employee);
+        }
+    }
+
+    private void addOfficeWorkers(Group group, String... names) {
+        // Here, I'm assuming that they are all SENIOR for simplicity. Modify as necessary.
+        for (String name : names) {
+            OfficeWorker employee = new OfficeWorker(name, group.getName(), EmployeeType.SENIOR);
+            workplace.addEmployee(employee);
+            group.addMember(employee);
+        }
+    }
+
+    private void addGroupLead(Group group, String name) {
+        GroupLead lead = new GroupLead(name, group.getName());
+        lead.setNumberOfEmployees(group.getMembers().size());
+        workplace.addEmployee(lead);
+        group.setAssignedLeader(lead);
     }
 }
