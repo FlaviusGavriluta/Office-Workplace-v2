@@ -8,8 +8,13 @@ public class GroupLead extends Employee {
         this.numberOfEmployees = numberOfEmployees;
     }
 
-    public GroupLead(String name, String groupName) {
-        super(name, groupName);
+//    public GroupLead(String name, String groupName) {
+//        super(name, groupName);
+//    }
+
+    @Override
+    public double monthlySalary() {
+        return 1800 + (200 * numberOfEmployees);
     }
 
     public int getNumberOfEmployees() {
@@ -18,10 +23,5 @@ public class GroupLead extends Employee {
 
     public void setNumberOfEmployees(int numberOfEmployees) {
         this.numberOfEmployees = numberOfEmployees;
-    }
-
-    @Override
-    public double monthlySalary() {
-        return 1800 + (200 * numberOfEmployees);
     }
 }
